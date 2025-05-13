@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import openpyxl
 
 # Configuração da página
 st.set_page_config(page_title="Prêmio MEC Educação Básica", layout="wide")
