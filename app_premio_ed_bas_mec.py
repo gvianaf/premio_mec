@@ -32,7 +32,16 @@ microdados, sinopse, ideb_esc_ai, ideb_esc_af, ideb_esc_em, ideb_mun_ai, ideb_mu
 
 # Primeira seção/aba: Top 5 municípios por região
 with tab1:
-    st.header("Top 5 Municípios por Região (QT_MAT_INF_CRE)")
+    st.header("Educação infantil")
+
+    f'''**Fontes e filtros utilizados**:\n
+    Sinopse do Censo da Educação Básica 2024
+    - Matriculados na creche total ou de 0 a 3 anos: T_CRECHE ou T_CRECHE_0_3
+    - Preenchimento de informações de raça/cor: P_RACA_COR
+    Censo Demográfico 2024
+    - População total de 0 a 3 anos: POP_0_3_CENSO22
+    Projeção Populacional 2024
+    - População total de 0 a 3 anos: POP_0_3_PROJ24'''
 
     col1, col2, col3 = st.columns(3)
     # Adicionando um seletor para escolher a taxa de cobertura
@@ -81,7 +90,8 @@ with tab1:
     top_municipios = (
         df_filtrado
         # Ordena por região e taxa de cobertura (decrescente)
-        .sort_values(['NO_REGIAO', 'P_COBERTURA_CALC'], ascending=[True, False])
+        .sort_values(['NO_REGIAO', 'P_COBERTURA_CALC', var_creche], 
+                     ascending=[True, False, False])
         # Agrupa por região e mantém os 5 maiores de cada grupo
         .groupby('NO_REGIAO', as_index=False)
         .head(5)
@@ -102,13 +112,24 @@ with tab2:
 
 with tab3:
     st.header('Fundamental AI')
+
+    f'''**Fontes e filtros utilizados**:\n
+    Censo da Educação Básica 2024
+    - Tipo de dependência: municipal (TP_DEPENDENCIA == 3)
+    - Indicador de oferta do fundamental anos iniciais (IN_FUND_AI == 1)
+    - Matriculados nos anos iniciais: QT_MAT_FUND_AI
+    IDEB 2023 (VL_OBSERVADO_2023)
+    - Rede: Municipal
+    INSE 2021 (MEDIA_INSE)'''
+
     st.title('Escolas municipais')
+
 
     df_ind3 = microdados[(microdados.TP_DEPENDENCIA == 3) & (microdados.IN_FUND_AI == 1)]
     # agrupar por CO_MUNICIPIO e calcular a soma de QT_MAT_FUND_AI
     # df_ind3 = df_ind3.groupby(['CO_MUNICIPIO', 'NO_MUNICIPIO', 'NO_UF', 'NO_REGIAO'], as_index=False).agg({'QT_MAT_FUND_AI': 'sum'})
     # tira as duplicatas
-    ideb_esc_ai_mun = ideb_esc_ai[ideb_esc_ai.REDE == 'Municipal']
+    ideb_esc_ai_mun = ideb_esc_ai[ideb_esc_ai.REDE.str.startswith('Municipal')]
     # juntar com ideb_esc_ai por CO_ENTIDADE e ID_ESCOLA (merge)
     df_ind3 = pd.merge(df_ind3, ideb_esc_ai_mun, 
                        left_on='CO_ENTIDADE', right_on='ID_ESCOLA', how='left')
@@ -140,7 +161,7 @@ with tab3:
     # agrupar por CO_MUNICIPIO e calcular a soma de QT_MAT_FUND_AI
     df_ind3b = df_ind3b.groupby(['CO_MUNICIPIO', 'NO_MUNICIPIO', 'NO_UF', 'NO_REGIAO'], as_index=False).agg({'QT_MAT_FUND_AI': 'sum'})
     # tira as duplicatas
-    ideb_mun_ai_mun = ideb_mun_ai[ideb_mun_ai.REDE == 'Municipal']
+    ideb_mun_ai_mun = ideb_mun_ai[ideb_mun_ai.REDE.str.startswith('Municipal')]
     # tira as duplicatas inse
     inse_mun_mun = inse_mun[(inse_mun.TP_TIPO_REDE == 3) & (inse_mun.TP_LOCALIZACAO == 0)]
     # juntar com ideb_esc_ai por CO_ENTIDADE e ID_ESCOLA (merge)
@@ -223,11 +244,21 @@ with tab3:
 
 with tab4:
     st.header('Fundamental AF')
+
+    f'''**Fontes e filtros utilizados**:\n
+    Censo da Educação Básica 2024
+    - Tipo de dependência: municipal (TP_DEPENDENCIA == 3)
+    - Indicador de oferta do fundamental anos finais (IN_FUND_AF == 1)
+    - Matriculados nos anos finais: QT_MAT_FUND_AF
+    IDEB 2023 (VL_OBSERVADO_2023)
+    - Rede: Municipal
+    INSE 2021 (MEDIA_INSE)'''
+
     st.title('Escolas municipais')
 
     df_ind4 = microdados[(microdados.TP_DEPENDENCIA == 3) & (microdados.IN_FUND_AF == 1)]
     # tira as duplicatas
-    ideb_esc_af_mun = ideb_esc_af[ideb_esc_af.REDE == 'Municipal']
+    ideb_esc_af_mun = ideb_esc_af[ideb_esc_af.REDE.str.startswith('Municipal')]
     # juntar com ideb_esc_ai por CO_ENTIDADE e ID_ESCOLA (merge)
     df_ind4 = pd.merge(df_ind4, ideb_esc_af_mun, 
                        left_on='CO_ENTIDADE', right_on='ID_ESCOLA', how='left')
@@ -259,7 +290,7 @@ with tab4:
     # agrupar por CO_MUNICIPIO e calcular a soma de QT_MAT_FUND_AI
     df_ind4b = df_ind4b.groupby(['CO_MUNICIPIO', 'NO_MUNICIPIO', 'NO_UF', 'NO_REGIAO'], as_index=False).agg({'QT_MAT_FUND_AF': 'sum'})
     # tira as duplicatas
-    ideb_mun_af_mun = ideb_mun_af[ideb_mun_af.REDE == 'Municipal']
+    ideb_mun_af_mun = ideb_mun_af[ideb_mun_af.REDE.str.startswith('Municipal')]
     # tira as duplicatas inse
     inse_mun_mun = inse_mun[(inse_mun.TP_TIPO_REDE == 3) & (inse_mun.TP_LOCALIZACAO == 0)]
     # juntar com ideb_esc_ai por CO_ENTIDADE e ID_ESCOLA (merge)
@@ -342,6 +373,16 @@ with tab4:
 
 with tab5:
     st.header('Ensino médio')
+
+    f'''**Fontes e filtros utilizados**:\n
+    Censo da Educação Básica 2024
+    - Tipo de dependência: estadual (TP_DEPENDENCIA == 2)
+    - Indicador de oferta do ensino médio (IN_MED == 1)
+    - Matriculados no ensino médio: QT_MAT_MED
+    IDEB 2023 (VL_OBSERVADO_2023)
+    - Rede: Estadual
+    INSE 2021 (MEDIA_INSE)'''
+
     st.title('Escolas estaduais')
 
     botao_vinculo = st.radio(
@@ -377,7 +418,7 @@ with tab5:
 
     st.dataframe(top_municipios_ind5, use_container_width=True, hide_index=True)
 
-    st.title('Estado - redes públicas')
+    st.title('Estado - redes estaduais')
     df_ind5c = microdados[(microdados.TP_DEPENDENCIA == 2) & (microdados.IN_MED == 1)]
     # # agrupar por CO_MUNICIPIO e calcular a soma de QT_MAT_FUND_AI
     df_ind5c = df_ind5c.groupby(['NO_UF', 'CO_UF'], as_index=False).agg({'QT_MAT_MED': 'sum'})
