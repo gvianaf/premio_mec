@@ -36,7 +36,8 @@ with tab1:
 
     f'''**Fontes e filtros utilizados**:\n
     Sinopse do Censo da Educação Básica 2024
-    - Matriculados na creche total ou de 0 a 3 anos: T_CRECHE ou T_CRECHE_0_3
+    - Matriculados na creche municipal: T_CRECHE
+    - Matriculados na creche total de 0 a 3 anos: T_CRECHE_0_3
     - Preenchimento de informações de raça/cor: P_RACA_COR
     Censo Demográfico 2022
     - População total de 0 a 3 anos: POP_0_3_CENSO22
@@ -73,7 +74,7 @@ with tab1:
     df_filtrado = sinopse[sinopse['P_RACA_COR'] > limiar]
 
     # Definindo a coluna de população conforme a taxa escolhida
-    if tx_cobertura_opcao == 'Censo Demográfico 2024':
+    if tx_cobertura_opcao == 'Censo Demográfico 2022':
         pop_col = 'POP_0_3_CENSO22'
     else:
         pop_col = 'POP_0_3_PROJ24'
