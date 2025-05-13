@@ -38,7 +38,7 @@ with tab1:
     Sinopse do Censo da Educação Básica 2024
     - Matriculados na creche total ou de 0 a 3 anos: T_CRECHE ou T_CRECHE_0_3
     - Preenchimento de informações de raça/cor: P_RACA_COR
-    Censo Demográfico 2024
+    Censo Demográfico 2022
     - População total de 0 a 3 anos: POP_0_3_CENSO22
     Projeção Populacional 2024
     - População total de 0 a 3 anos: POP_0_3_PROJ24'''
