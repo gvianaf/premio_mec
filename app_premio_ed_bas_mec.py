@@ -7,7 +7,7 @@ st.set_page_config(page_title="Prêmio MEC Educação Básica", layout="wide")
 st.title("Prêmio MEC Educação Básica")
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(['Educação infantil', 'Alfabetização', 'Fundamental AI',
          'Fundamental AF', 'Médio', 'Enem', 'TI', 'Médio EPT'])
-# Carregando os dados
+# Carregando pipos dados
 @st.cache_data
 def load_data():
     df_microdados = pd.read_csv('microdados_ed_basica_2024/dados/microdados_ed_basica_2024_resumido.csv', sep=';', encoding='latin1')
