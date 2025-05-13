@@ -48,7 +48,7 @@ with tab1:
     with col1:
         tx_cobertura_opcao = st.radio(
         "Escolha a cobertura para ordenação:",
-        options=['Censo Demográfico 2024', 'Projeção Populacional 2024'],
+        options=['Censo Demográfico 2022', 'Projeção Populacional 2024'],
         index=0
     )
     
@@ -84,7 +84,7 @@ with tab1:
         var_creche = 'T_CRECHE_0_3'
 
     # Calculando a razão entre T_CRECHE_0_3 e pop_col
-    df_filtrado['P_COBERTURA_CALC'] = (df_filtrado[var_creche] / df_filtrado[pop_col])
+    df_filtrado['P_COBERTURA_CALC'] = (df_filtrado[var_creche] / df_filtrado[pop_col]).clip(upper=1)
 
     # Agrupando e selecionando os 5 primeiros por região com base na taxa escolhida
     top_municipios = (
