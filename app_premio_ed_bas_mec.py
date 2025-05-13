@@ -379,6 +379,8 @@ with tab5:
     Censo da Educação Básica 2024
     - Tipo de dependência: estadual (TP_DEPENDENCIA == 2)
     - Indicador de oferta do ensino médio (IN_MED == 1)
+    - Indicador de vinculação a Secretaria de Educação (IN_VINCULO_SECRETARIA_EDUCACAO == 1)
+    - Indicador de exame de seleção (IN_EXAME_SELECAO == 0)
     - Matriculados no ensino médio: QT_MAT_MED
     IDEB 2023 (VL_OBSERVADO_2023)
     - Rede: Estadual
@@ -392,7 +394,7 @@ with tab5:
         index=0
     )
 
-    df_ind5 = microdados[(microdados.TP_DEPENDENCIA == 2) & (microdados.IN_MED == 1)]
+    df_ind5 = microdados[(microdados.TP_DEPENDENCIA == 2) & (microdados.IN_MED == 1) & (microdados.IN_VINCULO_SECRETARIA_EDUCACAO == 1) & (microdados.IN_EXAME_SELECAO == 0)]
     # tira as duplicatas
     ideb_esc_em_mun = ideb_esc_em[ideb_esc_em.REDE.str.startswith('Estadual')]
     # juntar com ideb_esc_ai por CO_ENTIDADE e ID_ESCOLA (merge)
